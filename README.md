@@ -1,5 +1,5 @@
 # OSCP-FIleTransfer-PrivEsc
-This is a repo containing few common Priv Esc techniques and file transfer techniques used by me during my OSCP preparation.
+This is a repo containing few common Priv Esc techniques and file transfer techniques  whcih were used by me during my OSCP journey.
 
 Note : As i am currently working as web application Pentester, i did not have specific notes for Web appication( i shall write  my own techniques to this repo later)
 
